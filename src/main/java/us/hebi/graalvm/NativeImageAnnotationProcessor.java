@@ -4,7 +4,7 @@ import com.google.auto.common.BasicAnnotationProcessor;
 import com.google.auto.service.AutoService;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSetMultimap;
-import us.hebi.graalvm.protos.ClassConfig;
+import us.hebi.graalvm.schema.ReflectConfig;
 import us.hebi.quickbuf.JsonSink;
 import us.hebi.quickbuf.RepeatedMessage;
 
@@ -39,7 +39,7 @@ public class NativeImageAnnotationProcessor extends BasicAnnotationProcessor {
 
     class DependencyInjectionConfigProcessor implements Step {
 
-        private static final String DI_CONFIG_FILE = "META-INF/native-image/annotations/reflect-config-di.json";
+        private static final String DI_CONFIG_FILE = "META-INF/native-image/annotations-di/reflect-config.json";
 
         @Override
         public Set<String> annotations() {
@@ -58,9 +58,9 @@ public class NativeImageAnnotationProcessor extends BasicAnnotationProcessor {
         public Set<? extends Element> process(ImmutableSetMultimap<String, Element> elementMap) {
 
             // Protobuf messages that conform to the GraalVM spec when written as JSON
-            RepeatedMessage<ClassConfig> reflectConfig = RepeatedMessage.newEmptyInstance(ClassConfig.getFactory());
-            HashMap<String, ClassConfig> classMap = new HashMap<>();
-            Function<Element, ClassConfig> getClassConfig = classElement -> classMap.computeIfAbsent(classElement.toString(), name -> reflectConfig.next().setName(name));
+            RepeatedMessage<ReflectConfig> reflectConfig = RepeatedMessage.newEmptyInstance(ReflectConfig.getFactory());
+            HashMap<String, ReflectConfig> classMap = new HashMap<>();
+            Function<Element, ReflectConfig> getClassConfig = classElement -> classMap.computeIfAbsent(classElement.toString(), name -> reflectConfig.next().setName(name));
 
             // Add all annotated elements to the config
             elementMap.values().forEach(element -> {

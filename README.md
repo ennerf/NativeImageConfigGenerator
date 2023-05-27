@@ -20,7 +20,7 @@ public class AnnotatedPojo {
 }
 ```
 
-produces a file in `META-INF/native-image/annotations/reflect-config-di.json` that contains the required configuration for using reflective DI:
+produces a file in `META-INF/native-image/annotations-di/reflect-config.json` that contains the required configuration for using reflective DI:
 
 ```json
 [{
